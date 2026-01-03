@@ -1,4 +1,4 @@
-import { fetchGitHubUser } from './githubApi.js';
+import { fetchGitHubUser, fetchGitHubUserRepos } from './githubApi.js';
 import { renderProfile, renderLoading, clearProfile } from './profileView.js';
 
 const inputSearch = document.getElementById('input-search');
@@ -13,6 +13,7 @@ btnSearch.addEventListener('click', async () => {
 
         try {
             const userData = await fetchGitHubUser(username);
+            const userRepos = await fetchGitHubUserRepos(username);
 
             if (!userData) {
                 alert('Usuário não encontrado. Por favor, verifique o nome de usuário e tente novamente.');
@@ -20,7 +21,7 @@ btnSearch.addEventListener('click', async () => {
                 return;
             }
 
-            renderProfile(userData, profileResults);
+            renderProfile(userData, userRepos, profileResults);
 
         } catch (error) {
             console.error('Erro ao buscar o perfil do GitHub:', error);
